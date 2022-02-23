@@ -1,3 +1,4 @@
+# from tkinter import Y
 import uuid
 
 menu = ['1. Daftar Kontak ',
@@ -7,11 +8,12 @@ menu = ['1. Daftar Kontak ',
         '5. Keluar'
         ]
 
-kontak = [{'UID': uuid.uuid4().hex[:8],
+kontak = [{'UID': uuid.uuid4().hex[:8].upper(),
            'Nama': 'Budi',
            'NoTelp': '0888876543210',
            'Email': 'beubudeidibudi@gmail.com',
            'Alamat': 'Jalan Terus Gg. Jadian'}]
+
 
 def show_kontak():
     show = True
@@ -24,7 +26,6 @@ def show_kontak():
         if show == '1':
             if len(kontak) != 0:
                 print('\n**Daftar Kontak**')
-                print(kontak)
                 for i, j in enumerate(kontak):
                     print(
                         f"{i+1}. UID : {j['UID']}, Nama : {j['Nama']}, No.Telp : {j['NoTelp']}, Email : {j['Email']}, Alamat : {j['Alamat']}")
@@ -35,16 +36,16 @@ def show_kontak():
         elif show == '2':
             if len(kontak) != 0:
                 cari = input('Pencarian Nama : ').upper()
-                print('\n**Hasil Pencarian Data Kontak', cari,'**')
+                print('\n**Hasil Pencarian Data Kontak', cari, '**')
                 for i, j in enumerate(kontak):
-                    if cari in j['Nama'].upper() or cari==j['Nama']:
+                    if cari in j['Nama'].upper() or cari == j['Nama']:
                         print(
                             f"{i+1}. UID : {j['UID']}, Nama : {j['Nama']}, No.Telp : {j['NoTelp']}, Email : {j['Email']}, Alamat : {j['Alamat']}")
                         continue
-                    else:
+                    elif i == len(kontak)-1 :
                         print(cari, 'TIDAK DITEMUKAN!')
                         break
-            else :
+            else:
                 print('\n**YELLOWPAGES KOSONG!**')
         elif show == '3':
             main()
@@ -62,7 +63,7 @@ def add_kontak():
         add = input('Pilihan Anda [1-2] : ')
         if add == '1':
             new = {}
-            new['UID'] = uuid.uuid4().hex[:8]
+            new['UID'] = uuid.uuid4().hex[:8].upper()
             new['Nama'] = input('Nama : ')
             new['NoTelp'] = input('Nomor Telepon : ')
             new['Email'] = input('Email : ')
@@ -71,10 +72,10 @@ def add_kontak():
                 save = input('Apakah kontak akan disimpan? [Y/N]  ').lower()
                 if save == 'y':
                     kontak.append(new)
-                    print('**KONTAK BARU BERHASIL DISIMPAN!**')
+                    print('\n**KONTAK BARU BERHASIL DISIMPAN!**')
                     break
                 elif save == 'n':
-                    print('**KONTAK BARU TIDAK DISIMPAN!**')
+                    print('\n**KONTAK BARU TIDAK DISIMPAN!**')
                     break
         elif add == '2':
             main()
@@ -92,37 +93,71 @@ def edit_kontak():
         edit = input('Pilihan Anda [1-2] : ')
         if edit == '1':
             cari = input('Masukkan Nama/UID Kontak untuk Diedit : ').upper()
-            for i,j in enumerate(kontak):
-                if cari == j['Nama'].upper() or cari == j['UID']:
-                    print(
-                        f"UID : {j['UID']}, Nama : {j['Nama']}, No.Telp : {j['NoTelp']}, Email : {j['Email']}, Alamat : {j['Alamat']}")
-                    if edit == '1':
+            for i, j in enumerate(kontak):
+                if cari == j['Nama'].upper() or cari == j['UID'].upper():
+                    print(f"UID : {j['UID']}, Nama : {j['Nama']}, No.Telp : {j['NoTelp']}, Email : {j['Email']}, Alamat : {j['Alamat']}")
+                    while edit == '1':
                         edit_deal = input('Apakah pengeditan kontak akan dilanjutkan? [Y/N] ').lower()
                         if edit_deal == 'y':
-                            kolom = input('Masukkan Kolom yang Akan Diedit [Nama/NoTelp/Email/Alamat] : ').upper()
+                            kolom = input(
+                                'Masukkan Kolom yang Akan Diedit [Nama/NoTelp/Email/Alamat] : ').upper()
                             if kolom == 'NAMA':
                                 nama = input('Masukkan Nama Baru : ')
-                                j['Nama'] = nama
-                                continue
+                                while edit == '1':
+                                    save = input('Apakah hasil pengeditan akan disimpan? [Y/N] ').lower()
+                                    if save == 'y':
+                                        j['Nama'] = nama
+                                        print(f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']}")
+                                        print('\n**PENGEDITAN BERHASIL DISIMPAN**')
+                                        break
+                                    elif save == 'n':
+                                        print('\n**PENGEDITAN DIBATALKAN!**')
+                                        break
+                                break
                             elif kolom == 'NOTELP' or kolom == 'NOMOR' or kolom == 'NOMORTELP':
                                 notelp = input('Masukkan No.Telp Baru : ')
-                                j['NoTelp'] = notelp
-                                continue
+                                while edit == '1':
+                                    save = input('Apakah hasil pengeditan akan disimpan? [Y/N] ').lower()
+                                    if save == 'y':
+                                        j['NoTelp'] = notelp
+                                        print(f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']}")
+                                        break
+                                    elif save == 'n':
+                                        print('\n**PENGEDITAN DIBATALKAN!**')
+                                        break
+                                break
                             elif kolom == 'EMAIL':
                                 email = input('Masukkan Email Baru : ')
-                                j['Email'] = email
-                                continue
+                                while edit == '1':
+                                    save = input('Apakah hasil pengeditan akan disimpan? [Y/N] ').lower()
+                                    if save == 'y':
+                                        j['Email'] = email
+                                        print(f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']}")
+                                        break
+                                    elif save == 'n':
+                                        print('\n**PENGEDITAN DIBATALKAN!**')
+                                        break
+                                break
                             elif kolom == 'ALAMAT':
                                 alamat = input('Masukkan Alamat Baru : ')
-                                j['Alamat'] = alamat
-                                continue
-                            print('\n**Masukkan Kolom yang Valid!**')
-                        elif edit == 'n':
+                                while edit == '1':
+                                    save = input('Apakah hasil pengeditan akan disimpan? [Y/N] ').lower()
+                                    if save == 'y':
+                                        j['Alamat'] = alamat
+                                        print(f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']}")
+                                        break
+                                    elif save == 'n':
+                                        print('\n**PENGEDITAN DIBATALKAN!**')
+                                        break
+                                break
+                            else:
+                                print('\n**Masukkan Kolom yang Valid!**')
+                            break
+                        elif edit_deal == 'n':
                             print('\n**PENGEDITAN KONTAK DIBATALKAN!**')
                             break
-                else:
-                    print('\n**TIDAK ADA KONTAK YANG COCOK!**\n')
-            continue
+                elif i==len(kontak)-1 and (cari!=j['Nama'].upper() or cari!=j['UID'].upper()):
+                    print('\n**TIDAK ADA KONTAK YANG COCOK!**')
         elif edit == '2':
             main()
         else:
@@ -139,19 +174,23 @@ def delete_kontak():
         delete = input('Pilihan Anda [1-2] : ')
         if delete == '1':
             cari = input('Masukkan Nama Kontak untuk Dihapus : ').upper()
-            for i,j in enumerate(kontak):
+            for i, j in enumerate(kontak):
                 if cari == j['Nama'].upper():
-                    print(f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']} ditemukan.")
-                    del_deal = input('Apakah Anda yakin menghapus kontak tersebut? [Y/N] ').lower()
-                    if del_deal=='y':
-                        for index in range(len(kontak)):
-                            del kontak[index]
+                    print(
+                        f"{j['Nama']} - {j['NoTelp']} - {j['Email']} - {j['Alamat']} ditemukan.")
+                    while delete == '1':
+                        del_deal = input('Apakah Anda yakin menghapus kontak tersebut? [Y/N] ').lower()
+                        if del_deal == 'y':
+                            del kontak[i]
+                            print('\n**KONTAK BERHASIL DIHAPUS!**')
                             break
-                        print('KONTAK BERHASIL DIHAPUS!')
-                    elif del_deal=='n':
-                        print('\n**PENGHAPUSAN KONTAK DIBATALKAN!**')
-                else:
+                        elif del_deal == 'n':
+                            print('\n**PENGHAPUSAN KONTAK DIBATALKAN!**')
+                            break
+                    break
+                elif i == len(kontak)-1 and cari != j['Nama'].upper():
                     print('\n**TIDAK ADA KONTAK YANG COCOK!**\n')
+                    break
         elif delete == '2':
             main()
         else:
@@ -162,7 +201,7 @@ def delete_kontak():
 def main():
     main_menu = True
     while main_menu == True:
-        print('\n----------SELAMAT DATANG @YellowPage!----------')
+        print('\n----------SELAMAT DATANG @YellowPages!----------')
         print(*menu, sep='\n')
         main_menu = input('Silakan Pilih Main_Menu [1-5] : ')
         if main_menu == '1':
@@ -179,11 +218,10 @@ def main():
             break
         elif main_menu == '5':
             print('\n**Sampai Jumpa Lagi @YellowPages!**\n')
-            break
+            main_menu=False
         else:
             print('\n**Masukkan Pilihan Menu yang Valid!**')
             main()
-
-
+    
 if __name__ == "__main__":
     main()
